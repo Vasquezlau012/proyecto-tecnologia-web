@@ -1,0 +1,25 @@
+{
+  "name": "otp-frontend",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Frontend para sistema OTP + Gestión de Estudiantes",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build",
+    "preview": "vite preview --host"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "lucide-react": "^0.453.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.0"
+  }
+}
