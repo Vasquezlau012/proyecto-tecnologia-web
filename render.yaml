@@ -1,0 +1,30 @@
+services:
+  # Configuración del Backend (Python FastAPI)
+  - type: web
+    name: backend-proyecto
+    env: python
+    buildCommand: pip install -r backend_python/requirements.txt
+    startCommand: cd backend_python && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.0
+      - key: SMTP_SERVER
+        sync: false
+      - key: SMTP_PORT
+        sync: false
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+
+  # Configuración del Frontend (React Static Site)
+  - type: static
+    name: frontend-proyecto
+    env: static
+    buildCommand: cd frontend/otp_frontend_project && npm install && npm run build
+    staticPublishPath: frontend/otp_frontend_project/dist
+    envVars:
+      - key: VITE_API_URL
+        sync: false
+      - key: NODE_VERSION
+        value: 20
