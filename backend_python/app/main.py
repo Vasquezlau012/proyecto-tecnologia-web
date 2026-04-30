@@ -33,14 +33,15 @@ def request_otp(request: schemas.OTPRequest, db: Session = Depends(get_db)):
     # Intentar envío real
     email_sent = utils.send_otp_email(request.email, otp_code)
     
+    # Siempre devolvemos el código en el mensaje para asegurar la demostración
     if not email_sent:
         return {
-            "message": f"OTP generado. (Nota: Error de conexión SMTP. Use el código de respaldo: {otp_code})", 
+            "message": f"OTP generado. (Nota: Bloqueo de red en hosting. Use el código de respaldo: {otp_code})", 
             "code": otp_code
         }
     
     return {
-        "message": f"OTP enviado correctamente a su correo. (Respaldo: {otp_code})", 
+        "message": f"OTP enviado correctamente a su correo. (Código: {otp_code})", 
         "code": otp_code
     }
 
