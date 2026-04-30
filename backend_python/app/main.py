@@ -30,13 +30,19 @@ def request_otp(request: schemas.OTPRequest, db: Session = Depends(get_db)):
     db.add(db_otp)
     db.commit()
     
-    # ENVÍO DE CORREO REAL ACTIVADO
+    # Intentar envío real
     email_sent = utils.send_otp_email(request.email, otp_code)
     
     if not email_sent:
-        return {"message": "OTP generado pero hubo un error al enviar el correo. Revisa tu configuración SMTP.", "code": otp_code}
+        return {
+            "message": f"OTP generado. (Nota: Error de conexión SMTP. Use el código de respaldo: {otp_code})", 
+            "code": otp_code
+        }
     
-    return {"message": "OTP enviado correctamente a su correo", "code": otp_code}
+    return {
+        "message": f"OTP enviado correctamente a su correo. (Respaldo: {otp_code})", 
+        "code": otp_code
+    }
 
 @app.post("/auth/verify-otp")
 def verify_otp(request: schemas.OTPVerify, db: Session = Depends(get_db)):
