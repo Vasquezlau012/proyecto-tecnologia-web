@@ -33,3 +33,4 @@ export const deleteStudent = (id: number) =>
   api.delete(`/students/${id}`);
 
 export default api;
+// Integración final realizada por Vasquezlau012
