@@ -23,7 +23,7 @@ def send_otp_email(email: str, otp: str):
         return False
 
     msg = MIMEMultipart()
-    msg['From'] = os.getenv("SENDER_EMAIL", "vasquezlau012@gmail.com")
+    msg['From'] = os.getenv("SENDER_EMAIL", "laura.vasquez@ieee.org")
     msg['To'] = email
     msg['Subject'] = "Codigo de Verificacion OTP"
 
