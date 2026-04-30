@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_URL = import.meta.env.VITE_API_URL || 'https://proyecto-tecnologia-web.onrender.com';
 
 const api = axios.create({
   baseURL: API_URL,
@@ -11,10 +11,10 @@ const api = axios.create({
 
 // OTP
 export const sendOTP = (email: string) =>
-  api.post('/auth/send-otp', { email });
+  api.post('/auth/request-otp', { email });
 
-export const verifyOTP = (email: string, otp: string) =>
-  api.post('/auth/verify-otp', { email, otp });
+export const verifyOTP = (email: string, code: string) =>
+  api.post('/auth/verify-otp', { email, code });
 
 // Estudiantes
 export const getStudents = () =>
@@ -33,4 +33,3 @@ export const deleteStudent = (id: number) =>
   api.delete(`/students/${id}`);
 
 export default api;
-// Integración final realizada por Vasquezlau012
