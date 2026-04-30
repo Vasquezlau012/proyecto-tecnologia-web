@@ -12,33 +12,33 @@ def generate_otp(length=6):
     return ''.join(random.choices(string.digits, k=length))
 
 def send_otp_email(email: str, otp: str):
-    # Intentamos el puerto 587 que a veces tiene reglas de salida diferentes en Render
-    smtp_server = os.getenv("SMTP_SERVER", "smtp.gmail.com")
-    smtp_port = 587
-    smtp_user = os.getenv("SMTP_USER")
+    # Usamos el puerto 2525 que es el estándar para saltar bloqueos en nubes como Render
+    smtp_server = os.getenv("SMTP_SERVER", "smtp.sendgrid.net")
+    smtp_port = 2525
+    smtp_user = os.getenv("SMTP_USER", "apikey")
     smtp_password = os.getenv("SMTP_PASSWORD")
 
-    if not smtp_user or not smtp_password:
+    if not smtp_password:
+        print("Error: API Key no configurada")
         return False
 
     msg = MIMEMultipart()
-    msg['From'] = smtp_user
+    msg['From'] = os.getenv("SENDER_EMAIL", "vasquezlau012@gmail.com")
     msg['To'] = email
-    msg['Subject'] = "Codigo de Verificacion - Proyecto Web"
+    msg['Subject'] = "Codigo de Verificacion OTP"
 
     body = f"Tu codigo de verificacion es: {otp}\n\nEste codigo expirara en 5 minutos."
     msg.attach(MIMEText(body, 'plain'))
 
     try:
-        # El truco: Usar un timeout corto y forzar el inicio de TLS de forma explícita
-        server = smtplib.SMTP(smtp_server, smtp_port, timeout=10)
-        server.ehlo() 
+        # Conexión optimizada para entornos con restricciones de red
+        server = smtplib.SMTP(smtp_server, smtp_port, timeout=20)
         server.starttls()
-        server.ehlo()
         server.login(smtp_user, smtp_password)
         server.send_message(msg)
         server.quit()
+        print(f"Correo enviado exitosamente a {email}")
         return True
     except Exception as e:
-        print(f"Error en el truco de envio: {e}")
+        print(f"Error en el envio SMTP: {e}")
         return False
